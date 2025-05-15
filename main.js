@@ -76,12 +76,11 @@ async function showForecast(latlng) {
     }
 
     //Links zu den JsonDaten
-markup += `
+    markup += `
     <p>
     <a href="${url}" target="forecast"> Daten downloaden</a>
     <a href="${osmUrl}" target="forecast"> OSM Details zum Ort </a>
-    </p>
-`;
+    </p>`;
 
     L.popup([
         latlng.lat, latlng.lng
