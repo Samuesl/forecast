@@ -31,18 +31,38 @@ L.control.scale({
 }).addTo(map);
 
 //MET Norway Vorhersage visualisieren
-async function showForecast(latlng){
+async function showForecast(latlng) {
     //console.log("Popup erzeugen bei:", latlng);
-    let url = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${latlng.lat}&lon=${latlng.lng}` ;
+    let url = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${latlng.lat}&lon=${latlng.lng}`;
     //console.log(url);
     let response = await fetch(url);
     let jsondata = await response.json();
-   // console.log(jsondata);
+    // console.log(jsondata);
+
+    //popup erzeugen
+
+    let markup = `
+        <ul>
+            <li>Luftdruck (hPa): air_pressure_at_sea_level</li>
+            <li>Lufttemperatur (celsius): air_temperature</li>
+            <li>Bewölkungsgrad (%) cloud_are_fraction</li>
+            <li>Luftfeuchtigkeit (%) raelitve_humidity</li>
+            <li>Windrichtung(°): wind_from_direction</li>
+            <li>Windgeschwindigkeit (km/h): wind_speed</li>
+        </ul>
+        `;
+
+    L.popup([
+        latlng.lat, latlng.lng
+    ], {
+        content: markup
+    }).openOn(overlays.forecast)
 
 }
 
+
 //auf Kartenklick reagieren
-map.on("click", function(evt) {
+map.on("click", function (evt) {
     //console.log(evt, evt.latlng);
     showForecast(evt.latlng);
 })
