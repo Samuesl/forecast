@@ -33,7 +33,8 @@ L.control.scale({
 //Ort über openStreetmap GEOCODING bestimmen
 async function getPlaceName(url) {
     let response = await fetch(url);
-    let jsondata = wait response.json();
+    let jsondata = await response.json();
+    console.log(jsondata)
     return jsondata.display_name;
 }
 
@@ -42,6 +43,8 @@ async function getPlaceName(url) {
 async function showForecast(latlng) {
     //console.log("Popup erzeugen bei:", latlng);
     let url = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${latlng.lat}&lon=${latlng.lng}`;
+    let osmUrl = `https://nominatim.openstreetmap.org/reverse?lat=${latlng.lat}&lon=${latlng.lng}&zoom=15&format=jsonv2`;
+    let placeName = await getPlaceName(osmUrl);
     //console.log(url);
     let response = await fetch(url);
     let jsondata = await response.json();
@@ -53,6 +56,7 @@ async function showForecast(latlng) {
 
     let markup = `
     <h3>Wettervorhersage für ${timestamp.toLocaleDateString()}</h3>
+    <small>Ort: ${placeName}</small>
         <ul>
             <li>Luftdruck (hPa): ${details.air_pressure_at_sea_level}</li>
             <li>Lufttemperatur (celsius): ${details.air_temperature}</li>
@@ -70,6 +74,14 @@ async function showForecast(latlng) {
         markup += `<img src="icons/${symbol}.svg" style="width:32px"
             title="${time.toLocaleString()}">`;
     }
+
+    //Links zu den JsonDaten
+markup += `
+    <p>
+    <a href="${url}" target="forecast"> Daten downloaden</a>
+    <a href="${osmUrl}" target="forecast"> OSM Details zum Ort </a>
+    </p>
+`;
 
     L.popup([
         latlng.lat, latlng.lng
