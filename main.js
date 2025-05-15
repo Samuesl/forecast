@@ -58,8 +58,9 @@ async function showForecast(latlng) {
         //wettericons für die nächsten 24 h in 3h schritten
         for(let i=0; i<=24; i+=3) {
             let symbol = jsondata.properties.timeseries[i].data.next_1_hours.summary.symbol_code;
-            console.log(symbol);
-            markup += `<img src="icons/${symbol}.svg" style="width:32px">`;
+            let time = new Date (jsondata.properties.timeseries[i].time);
+            markup += `<img src="icons/${symbol}.svg" style="width:32px"
+            title="${time.toLocaleString()}">`;
         }
 
     L.popup([
