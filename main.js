@@ -40,15 +40,18 @@ async function showForecast(latlng) {
     // console.log(jsondata);
 
     //popup erzeugen
+    let details = jsondata.properties.timeseries[0].data.instant.details;
+    let timestamp = new Date(jsondata.properties.meta.updated_at);
 
     let markup = `
+    <h3>Wettervorhersage für ${timestamp.toLocaleDateString()}</h3>
         <ul>
-            <li>Luftdruck (hPa): air_pressure_at_sea_level</li>
-            <li>Lufttemperatur (celsius): air_temperature</li>
-            <li>Bewölkungsgrad (%) cloud_are_fraction</li>
-            <li>Luftfeuchtigkeit (%) raelitve_humidity</li>
-            <li>Windrichtung(°): wind_from_direction</li>
-            <li>Windgeschwindigkeit (km/h): wind_speed</li>
+            <li>Luftdruck (hPa): ${details.air_pressure_at_sea_level}</li>
+            <li>Lufttemperatur (celsius): ${details.air_temperature}</li>
+            <li>Bewölkungsgrad (%) ${details.cloud_area_fraction}</li>
+            <li>Luftfeuchtigkeit (%) ${details.relative_humidity}</li>
+            <li>Windrichtung(°): ${details.wind_from_direction}</li>
+            <li>Windgeschwindigkeit (km/h): ${details.wind_speed}</li>
         </ul>
         `;
 
