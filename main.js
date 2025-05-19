@@ -12,7 +12,8 @@ let map = L.map("map").setView([ibk.lat, ibk.lng], 5);
 // thematische Layer
 let overlays = {
     forecast: L.featureGroup().addTo(map),
-    wind: L.featureGroup().addTo(map)
+    wind: L.featureGroup().addTo(map),
+    wind_richtung: L.featureGroup().addTo(map)
 }
 
 // Layer Control
@@ -23,6 +24,7 @@ let layerControl = L.control.layers({
 }, {
     "Wettervorhersage MET Norway": overlays.forecast,
     "ECMWF Windvorhersage": overlays.wind,
+    "Windrichtung": overlays.wind_richtung,
 }).addTo(map);
 
 // Maßstab
