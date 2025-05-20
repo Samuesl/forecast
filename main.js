@@ -13,7 +13,6 @@ let map = L.map("map").setView([ibk.lat, ibk.lng], 5);
 let overlays = {
     forecast: L.featureGroup().addTo(map),
     wind: L.featureGroup().addTo(map),
-    wind_richtung: L.featureGroup().addTo(map)
 }
 
 // Layer Control
@@ -124,10 +123,10 @@ async function loadWind(url) {
             position: "bottomright",
 
             // no data at cursor
-            emptyString: "keine Daten vorhanden",
+            emptyString: "No velocity data",
 
             //  one of: ['ms', 'k/h', 'mph', 'kt']
-            speedUnit: "k/h",
+            speedUnit: "km/h",
 
             // direction label prefix
             directionString: "Windrichtung",
@@ -135,7 +134,7 @@ async function loadWind(url) {
             // speed label prefix
             speedString: "Windgeschwindigkeit",
         },
-        data: jsondata, // see demo/*.json, or wind-js-server for example data service
+        data: jsondata,
     }).addTo(overlays.wind);
 }
 
