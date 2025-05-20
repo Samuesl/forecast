@@ -24,7 +24,6 @@ let layerControl = L.control.layers({
 }, {
     "Wettervorhersage MET Norway": overlays.forecast,
     "ECMWF Windvorhersage": overlays.wind,
-    "Windrichtung": overlays.wind_richtung,
 }).addTo(map);
 
 // Maßstab
@@ -112,21 +111,32 @@ map.fire("click", {
 async function loadWind(url) {
     let response = await fetch(url);
     let jsondata = await response.json();
-    console.log(jsondata);
+    console.log(jsondata)
 
-    let velocityLayer = L.velocityLayer({
+
+    L.velocityLayer({
         displayValues: true,
-        lineWidth: 2,
         displayOptions: {
-        
-        velocityType: "",
-          position: "bottomright",
-          emptyString: "Keine Daten vorhanden",
-          speedUnit: "k/h",
-          directionString: "Windrichtung",
-          speedString: "Windgeschwindigkeit",
+            // label prefix
+            velocityType: "",
+
+            // leaflet control position
+            position: "bottomright",
+
+            // no data at cursor
+            emptyString: "keine Daten vorhanden",
+
+            //  one of: ['ms', 'k/h', 'mph', 'kt']
+            speedUnit: "k/h",
+
+            // direction label prefix
+            directionString: "Windrichtung",
+
+            // speed label prefix
+            speedString: "Windgeschwindigkeit",
         },
-        data: jsondata,
-      }).addTo(overlays.wind_richtung);
+        data: jsondata, // see demo/*.json, or wind-js-server for example data service
+    }).addTo(overlays.wind);
 }
+
 loadWind("https://geographie.uibk.ac.at/data/ecmwf/data/wind-10u-10v-europe.json");
